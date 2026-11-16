@@ -40,6 +40,14 @@ Dans `src/main/resources/META-INF/persistence.xml` : URL `jdbc:mysql://localhost
 
 La base **et** les tables sont créées automatiquement au premier démarrage (`hbm2ddl.auto=update`), ainsi que des données de démonstration.
 
+## Lancer le plus simplement (n'importe quel Eclipse, même portable)
+
+1. Démarrer MySQL (XAMPP/WAMP).
+2. Eclipse : **File → Import… → General → Existing Projects into Workspace** (ou **Maven → Existing Maven Projects** si présent) → dossier du projet.
+3. Clic droit sur le projet → **Run As → Maven build…** → *Goals* : `clean package` → **Run**. Le fichier `target\inscriptions.war` est créé.
+4. Double-cliquer sur **`demarrer.bat`** (dans le dossier du projet) : il copie le .war dans Tomcat, démarre Tomcat et ouvre http://localhost:8080/inscriptions/
+5. Pour arrêter : **`arreter.bat`**. Après une modification du code : refaire l'étape 3 puis l'étape 4.
+
 ## Lancer dans Eclipse (Enterprise Java)
 
 1. Démarrer MySQL (panneau XAMPP/WAMP ou service MySQL).
