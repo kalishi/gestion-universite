@@ -10,7 +10,7 @@
                         <div class="col-6"><label class="form-label" for="nom">Nom<span class="req">*</span></label><input id="nom" name="nom" class="form-control" required></div>
                     </div>
                     <div class="mb-3"><label class="form-label" for="email">Email<span class="req">*</span></label><input type="email" id="email" name="email" class="form-control" required></div>
-                    <div class="mb-3"><label class="form-label" for="motDePasse">Mot de passe initial<span class="req">*</span></label><input id="motDePasse" name="motDePasse" class="form-control" required></div>
+                    <div class="mb-3"><label class="form-label" for="motDePasse">Mot de passe initial<span class="req">*</span></label><input id="motDePasse" name="motDePasse" class="form-control" minlength="6" required aria-describedby="mdpProfAide"><div id="mdpProfAide" class="form-text">6 caractères minimum, enregistré chiffré (BCrypt).</div></div>
                     <button type="submit" class="btn btn-primary"><i class="bi bi-person-plus"></i> Créer le compte</button>
                 </form>
             </div>

@@ -55,6 +55,15 @@ Les données de démo couvrent 7 facultés, 11 programmes, 24 cours, 7 professeu
 
 Pièces jointes enregistrées dans `C:\Users\<vous>\unaf-uploads`.
 
+## Sécurité des mots de passe
+
+Les mots de passe sont **hachés avec BCrypt** (coût 10, sel aléatoire) avant d'être enregistrés : la base ne contient que des empreintes du type `$2a$10$…` (60 caractères), jamais le mot de passe en clair. Implémentation : `util/MotDePasse.java`, qui s'appuie sur jBCrypt (`org/mindrot/BCrypt.java`, licence ISC, inclus dans le projet — aucune dépendance à télécharger).
+
+- Inscription, création de compte professeur et données de démo : le mot de passe est haché.
+- Connexion : `BCrypt.checkpw` compare le mot de passe saisi à l'empreinte.
+- Migration : un ancien compte encore en clair est accepté une fois, puis son mot de passe est haché automatiquement à cette connexion.
+- Longueur minimale : 6 caractères.
+
 ## Hors périmètre (volontairement non inclus)
 
-Hachage BCrypt des mots de passe, API REST JAX-RS, migration Spring Boot, envoi de courriels, Docker.
+API REST JAX-RS, migration Spring Boot, envoi de courriels, Docker.

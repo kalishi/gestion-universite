@@ -29,8 +29,8 @@
                     <div class="col-12"><label class="form-label" for="email">Adresse email<span class="req">*</span></label>
                         <input type="email" id="email" name="email" class="form-control" autocomplete="email" value="<c:out value='${param.email}'/>" required></div>
                     <div class="col-12"><label class="form-label" for="motDePasse">Mot de passe<span class="req">*</span></label>
-                        <input type="password" id="motDePasse" name="motDePasse" class="form-control" minlength="4" autocomplete="new-password" required aria-describedby="mdpAide">
-                        <div id="mdpAide" class="form-text">4 caractères minimum.</div></div>
+                        <input type="password" id="motDePasse" name="motDePasse" class="form-control" minlength="6" autocomplete="new-password" required aria-describedby="mdpAide">
+                        <div id="mdpAide" class="form-text">6 caractères minimum. Il est enregistré chiffré (BCrypt).</div></div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100 btn-lg mt-4">Créer mon compte</button>
             </form>

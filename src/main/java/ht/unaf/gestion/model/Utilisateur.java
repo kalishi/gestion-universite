@@ -17,7 +17,8 @@ public class Utilisateur {
     @Column(nullable = false, unique = true, length = 120)
     private String email;
 
-    @Column(name = "mot_de_passe", nullable = false)
+    /** Empreinte BCrypt du mot de passe (jamais le mot de passe en clair). */
+    @Column(name = "mot_de_passe", nullable = false, length = 100)
     private String motDePasse;
 
     @Enumerated(EnumType.STRING)

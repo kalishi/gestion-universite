@@ -3,6 +3,7 @@ package ht.unaf.gestion.service;
 import ht.unaf.gestion.dao.UtilisateurDao;
 import ht.unaf.gestion.model.*;
 import ht.unaf.gestion.util.JPAUtil;
+import ht.unaf.gestion.util.MotDePasse;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
@@ -21,7 +22,7 @@ public class DonneesDemo {
     }
 
     private static void charger(EntityManager em) {
-        em.persist(new Utilisateur("Système", "Administrateur", "admin@unaf.ht", "admin123", Role.ADMIN));
+        em.persist(new Utilisateur("Système", "Administrateur", "admin@unaf.ht", MotDePasse.hacher("admin123"), Role.ADMIN));
 
         // ---------- Facultés ----------
         Faculte fsi = fac(em, "Faculté des Sciences Informatiques");
@@ -161,11 +162,11 @@ public class DonneesDemo {
     private static Salle salle(EntityManager em, String nom, int cap) { Salle s = new Salle(nom, cap); em.persist(s); return s; }
 
     private static Utilisateur prof(EntityManager em, String nom, String prenom, String email) {
-        Utilisateur u = new Utilisateur(nom, prenom, email, "prof123", Role.PROFESSEUR); em.persist(u); return u;
+        Utilisateur u = new Utilisateur(nom, prenom, email, MotDePasse.hacher("prof123"), Role.PROFESSEUR); em.persist(u); return u;
     }
 
     private static Utilisateur etu(EntityManager em, String nom, String prenom, String email, String mdp) {
-        Utilisateur u = new Utilisateur(nom, prenom, email, mdp, Role.ETUDIANT); em.persist(u); return u;
+        Utilisateur u = new Utilisateur(nom, prenom, email, MotDePasse.hacher(mdp), Role.ETUDIANT); em.persist(u); return u;
     }
 
     private static Cours cours(EntityManager em, String code, String intitule, int credits, Programme p, Utilisateur prof,
