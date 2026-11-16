@@ -3,23 +3,23 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-    <persistence-unit name="inscriptionsPU" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="unafPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>ht.unaf.inscriptions.model.Utilisateur</class>
-        <class>ht.unaf.inscriptions.model.Faculte</class>
-        <class>ht.unaf.inscriptions.model.Programme</class>
-        <class>ht.unaf.inscriptions.model.Salle</class>
-        <class>ht.unaf.inscriptions.model.SessionAcademique</class>
-        <class>ht.unaf.inscriptions.model.Cours</class>
-        <class>ht.unaf.inscriptions.model.DossierInscription</class>
-        <class>ht.unaf.inscriptions.model.Paiement</class>
-        <class>ht.unaf.inscriptions.model.InscriptionCours</class>
+        <class>ht.unaf.gestion.model.Utilisateur</class>
+        <class>ht.unaf.gestion.model.Faculte</class>
+        <class>ht.unaf.gestion.model.Programme</class>
+        <class>ht.unaf.gestion.model.Salle</class>
+        <class>ht.unaf.gestion.model.SessionAcademique</class>
+        <class>ht.unaf.gestion.model.Cours</class>
+        <class>ht.unaf.gestion.model.DossierInscription</class>
+        <class>ht.unaf.gestion.model.Paiement</class>
+        <class>ht.unaf.gestion.model.InscriptionCours</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <!-- Connexion MySQL : la base est créée automatiquement si elle n'existe pas -->
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:mysql://localhost:3306/inscriptions_univ?createDatabaseIfNotExist=true&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8"/>
+                      value="jdbc:mysql://localhost:3306/unaf_db?createDatabaseIfNotExist=true&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
 

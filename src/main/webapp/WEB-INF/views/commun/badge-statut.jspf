@@ -1,0 +1,1 @@
+<%@ page pageEncoding="UTF-8" %><c:choose><c:when test="${d.statut == 'VALIDE'}"><span class="badge-soft badge-success">Validé</span></c:when><c:when test="${d.statut == 'REJETE'}"><span class="badge-soft badge-danger">Rejeté</span></c:when><c:otherwise><span class="badge-soft badge-warning">En attente</span></c:otherwise></c:choose>

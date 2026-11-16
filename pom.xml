@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ht.unaf</groupId>
-    <artifactId>inscriptions-universitaires</artifactId>
+    <artifactId>unaf</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
-    <name>Plateforme de gestion des inscriptions universitaires</name>
+    <name>UNAF – Système de gestion universitaire</name>
 
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <hibernate.version>6.6.4.Final</hibernate.version>
-        <!-- URL dans Eclipse : http://localhost:8080/inscriptions/ -->
-        <m2eclipse.wtp.contextRoot>inscriptions</m2eclipse.wtp.contextRoot>
+        <!-- URL dans Eclipse : http://localhost:8080/unaf/ -->
+        <m2eclipse.wtp.contextRoot>unaf</m2eclipse.wtp.contextRoot>
     </properties>
 
     <dependencies>
@@ -68,7 +68,7 @@
     </dependencies>
 
     <build>
-        <finalName>inscriptions</finalName>
+        <finalName>unaf</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

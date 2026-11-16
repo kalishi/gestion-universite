@@ -1,31 +1,42 @@
 <%@ include file="/WEB-INF/views/commun/header.jspf" %>
-<h1 class="h3 mb-4">Salles</h1>
-<div class="row g-4">
-    <div class="col-md-4">
-        <div class="card shadow-sm"><div class="card-body">
-            <h2 class="h6">${empty edition ? 'Nouvelle salle' : 'Modifier la salle'}</h2>
-            <form method="post">
-                <input type="hidden" name="id" value="${edition.id}">
-                <input name="nom" class="form-control mb-2" placeholder="Nom (ex. A-101)" value="<c:out value='${edition.nom}'/>" required>
-                <input type="number" name="capacite" class="form-control mb-3" placeholder="Capacité" value="${edition.capacite}" min="1">
-                <button class="btn btn-primary">Enregistrer</button>
-                <c:if test="${not empty edition}"><a href="${ctx}/admin/salles" class="btn btn-link">Annuler</a></c:if>
-            </form>
-        </div></div>
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h2>${empty edition ? 'Nouvelle salle' : 'Modifier la salle'}</h2></div>
+            <div class="card-body">
+                <form method="post" data-loading>
+                    <input type="hidden" name="id" value="${edition.id}">
+                    <div class="mb-3"><label class="form-label" for="nom">Nom<span class="req">*</span></label>
+                        <input id="nom" name="nom" class="form-control" placeholder="Ex. A-101, Amphi 1, Labo 2" value="<c:out value='${edition.nom}'/>" required></div>
+                    <div class="mb-3"><label class="form-label" for="capacite">Capacité (places)</label>
+                        <input type="number" id="capacite" name="capacite" class="form-control" value="${edition.capacite}" min="1"></div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Enregistrer</button>
+                        <c:if test="${not empty edition}"><a href="${ctx}/admin/salles" class="btn btn-ghost">Annuler</a></c:if>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="col-md-8">
-        <div class="card shadow-sm"><div class="card-body p-0">
-            <table class="table table-hover mb-0">
-                <thead class="table-light"><tr><th>Salle</th><th>Capacité</th><th class="text-end">Actions</th></tr></thead>
-                <tbody>
-                <c:forEach var="s" items="${salles}">
-                    <tr><td><c:out value="${s.nom}"/></td><td>${s.capacite}</td>
-                        <td class="text-end"><a class="btn btn-sm btn-outline-secondary" href="?modifier=${s.id}"><i class="bi bi-pencil"></i></a>
-                        <form method="post" class="d-inline" onsubmit="return confirm('Supprimer ?')"><input type="hidden" name="action" value="supprimer"><input type="hidden" name="id" value="${s.id}"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></form></td></tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div></div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="table-toolbar">
+                <div class="search-input"><i class="bi bi-search"></i><input type="search" class="form-control" placeholder="Rechercher une salle" aria-label="Rechercher" data-filter-table="#tbl"></div>
+                <span class="small text-muted">${salles.size()} salle(s)</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-unaf table-hover" id="tbl">
+                    <thead><tr><th>Salle</th><th class="num">Capacité</th><th class="actions">Actions</th></tr></thead>
+                    <tbody>
+                    <c:forEach var="s" items="${salles}">
+                        <tr data-row><td><span class="cell-title"><i class="bi bi-door-open me-2 text-muted"></i><c:out value="${s.nom}"/></span></td><td class="num">${s.capacite} places</td>
+                            <td class="actions"><a class="btn btn-sm btn-ghost" href="?modifier=${s.id}" aria-label="Modifier"><i class="bi bi-pencil"></i></a><form method="post" class="d-inline" data-confirm="Supprimer cet élément ? Cette action est définitive."><input type="hidden" name="action" value="supprimer"><input type="hidden" name="id" value="${s.id}"><button class="btn btn-sm btn-ghost text-danger" aria-label="Supprimer"><i class="bi bi-trash"></i></button></form></td></tr>
+                    </c:forEach>
+                    <c:if test="${empty salles}"><tr><td colspan="3"><div class="empty-state"><i class="bi bi-door-open"></i>Aucune salle enregistrée.</div></td></tr></c:if>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 <%@ include file="/WEB-INF/views/commun/footer.jspf" %>

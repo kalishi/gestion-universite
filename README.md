@@ -1,82 +1,59 @@
-# Plateforme de gestion des inscriptions universitaires (Jakarta EE)
+# UNAF — Système de gestion universitaire (Jakarta EE)
 
-Projet Java EE – Université Anténor Firmin, Faculté des Sciences Informatiques.
+Application web de gestion de **toute l'Université Anténor Firmin** : facultés, programmes (licence, master, doctorat), admissions, cours, emplois du temps, notes et frais de scolarité.
 
-Version simple et fonctionnelle : **Servlets + JSP/JSTL (MVC)**, **JPA/Hibernate**, **MySQL**, **Bootstrap 5**, construite avec **Maven** et déployée sur **Tomcat 10.1**.
+**Technologies :** Java 17 · Servlets + JSP/JSTL (MVC) · JPA/Hibernate · MySQL · Bootstrap 5 · Chart.js · Maven · Tomcat 10.1.
+**Fonctionne sans Internet :** Bootstrap, les icônes, les polices (Lexend, Source Sans 3) et Chart.js sont dans `src/main/webapp/assets/vendor`.
 
 ## Fonctionnalités
 
-| Rôle | Fonctions |
+| Espace | Fonctions |
 |---|---|
-| **Administration** | Facultés, programmes (licence/master, frais, crédits max), cours (horaire, salle, prérequis), sessions, salles ; validation/rejet des dossiers ; paiements partiels et solde ; affectation des professeurs aux cours ; création des comptes professeurs |
-| **Étudiant** | Création de compte ; dépôt du dossier avec pièces jointes (photo, diplôme, acte de naissance) ; choix des cours de la session active avec vérification des **prérequis** et du **maximum de crédits** ; emploi du temps ; notes ; **relevé de notes en PDF** |
-| **Professeur** | Liste de ses cours et des étudiants inscrits ; saisie des notes (partiel, examen final, travaux) avec **calcul automatique** de la note finale (30 % / 40 % / 30 %, passage à 60) |
+| **Administration** | Tableau de bord (effectifs, admissions, frais encaissés, graphiques par faculté) ; facultés, programmes, cours (horaire, salle, prérequis, professeur), sessions, salles ; admissions (validation/rejet, filtres par statut) ; annuaire des étudiants par faculté ; paiements partiels et solde ; comptes professeurs |
+| **Étudiant** | Création de compte ; dossier d'admission avec pièces jointes ; choix des cours (prérequis + crédits max) ; emploi du temps ; notes et relevé PDF ; suivi des paiements |
+| **Professeur** | Ses cours et ses étudiants ; saisie des notes avec calcul automatique (30 % partiel, 40 % final, 30 % travaux) |
 
-Filtre de servlet (`AuthFilter`) : authentification par session + contrôle du rôle selon l'URL (`/admin/*`, `/etudiant/*`, `/professeur/*`).
+## Interface
+
+Design system généré avec le skill **ui-ux-pro-max** (style « Data-Dense Dashboard ») : bleu académique `#1E40AF`, accent ambre `#D97706`, titres en Lexend et texte en Source Sans 3. Barre latérale par rôle, tableaux avec recherche instantanée, formulaires avec libellés visibles, responsive (mobile → grand écran).
+
+Fichiers : `assets/css/unaf.css` (thème), `assets/js/unaf.js` (interactions), `WEB-INF/views/commun/header.jspf` (mise en page).
 
 ## Architecture
 
 ```
-src/main/java/ht/unaf/inscriptions/
-├── model/      Entités JPA (Utilisateur, Faculte, Programme, Cours, SessionAcademique, Salle,
-│               DossierInscription, Paiement, InscriptionCours) + énumérations
-├── dao/        Accès aux données (GenericDao + DAO spécifiques, requêtes JPQL paramétrées)
-├── service/    Règles métier (AuthService, InscriptionService, NoteService, ReleveService PDF,
-│               DonneesDemo)
-├── web/        Contrôleurs (servlets), AuthFilter, AppListener
-│   ├── admin/  etudiant/  professeur/
-└── util/       JPAUtil (EntityManagerFactory), Fichiers (pièces jointes)
-src/main/webapp/WEB-INF/views/   Vues JSP (Bootstrap) par rôle
-src/main/resources/META-INF/persistence.xml   Configuration JPA / MySQL
+src/main/java/ht/unaf/gestion/
+├── model/     Entités JPA
+├── dao/       Accès aux données (GenericDao, StatsDao pour les tableaux de bord…)
+├── service/   Règles métier (inscription aux cours, notes, relevé PDF, données de démo)
+├── web/       Servlets (admin/, etudiant/, professeur/), filtre des rôles, listener
+└── util/      JPAUtil, Fichiers, Json
+src/main/webapp/WEB-INF/views/   Vues JSP
 ```
 
-## Prérequis
+## Lancer l'application (n'importe quel Eclipse, même portable)
 
-- JDK 17, Maven (intégré à Eclipse), Tomcat 10.1, MySQL (ou MariaDB de XAMPP/WAMP) démarré sur le port 3306.
+1. Démarrer MySQL (XAMPP/WAMP). La base `unaf_db` et ses tables sont créées automatiquement au premier lancement, avec les données de démonstration.
+2. Eclipse : **File → Import… → Maven → Existing Maven Projects** (ou **General → Existing Projects into Workspace**) → dossier du projet.
+3. Clic droit sur le projet → **Run As → Maven build…** → *Goals* : `clean package` → **Run**. Le fichier `target\unaf.war` est créé.
+4. Double-cliquer sur **`demarrer.bat`** : il déploie sur Tomcat et ouvre http://localhost:8080/unaf/
+5. Pour arrêter : **`arreter.bat`**. Après une modification : refaire les étapes 3 et 4.
 
-## Configuration de la base
+Avec Eclipse Enterprise Java, on peut aussi ajouter un serveur Tomcat v10.1 (vue *Servers*) puis **Run As → Run on Server**.
 
-Dans `src/main/resources/META-INF/persistence.xml` : URL `jdbc:mysql://localhost:3306/inscriptions_univ`, utilisateur `root`, mot de passe vide (XAMPP/WAMP par défaut). Modifiez `jakarta.persistence.jdbc.user` / `password` si votre MySQL a un mot de passe.
-
-La base **et** les tables sont créées automatiquement au premier démarrage (`hbm2ddl.auto=update`), ainsi que des données de démonstration.
-
-## Lancer le plus simplement (n'importe quel Eclipse, même portable)
-
-1. Démarrer MySQL (XAMPP/WAMP).
-2. Eclipse : **File → Import… → General → Existing Projects into Workspace** (ou **Maven → Existing Maven Projects** si présent) → dossier du projet.
-3. Clic droit sur le projet → **Run As → Maven build…** → *Goals* : `clean package` → **Run**. Le fichier `target\inscriptions.war` est créé.
-4. Double-cliquer sur **`demarrer.bat`** (dans le dossier du projet) : il copie le .war dans Tomcat, démarre Tomcat et ouvre http://localhost:8080/inscriptions/
-5. Pour arrêter : **`arreter.bat`**. Après une modification du code : refaire l'étape 3 puis l'étape 4.
-
-## Lancer dans Eclipse (Enterprise Java)
-
-1. Démarrer MySQL (panneau XAMPP/WAMP ou service MySQL).
-2. **File → Import… → Maven → Existing Maven Projects** → choisir ce dossier → *Finish*. Eclipse télécharge les dépendances (connexion Internet requise la première fois).
-3. Si besoin : clic droit sur le projet → **Maven → Update Project…**
-4. Fenêtre **Servers** (Window → Show View → Servers) → *Create a new server* → **Apache → Tomcat v10.1 Server** → répertoire `C:\apache-tomcat-10.1.53` → JRE : JDK 17 → ajouter le projet `inscriptions-universitaires`.
-5. Clic droit sur le projet → **Run As → Run on Server**.
-6. Ouvrir http://localhost:8080/inscriptions/
-
-## Déployer le .war (sans Eclipse)
-
-```
-mvn clean package
-copy target\inscriptions.war C:\apache-tomcat-10.1.53\webapps\
-C:\apache-tomcat-10.1.53\bin\startup.bat
-```
-Puis http://localhost:8080/inscriptions/
+MySQL : utilisateur `root`, mot de passe vide par défaut (XAMPP/WAMP). À changer dans `src/main/resources/META-INF/persistence.xml` si besoin.
 
 ## Comptes de démonstration
 
 | Rôle | Email | Mot de passe |
 |---|---|---|
-| Administrateur | admin@unaf.ht | admin123 |
+| Administration | admin@unaf.ht | admin123 |
 | Professeur | prof@unaf.ht | prof123 |
-| Étudiant (dossier validé) | etudiant@unaf.ht | etu123 |
+| Étudiant | etudiant@unaf.ht | etu123 |
 
-L'étudiant de démo a déjà réussi INF101 et INF102 (session Automne 2025) : il peut prendre INF201 (prérequis INF101) mais pas INF301 (prérequis INF102 + INF201).
+Les données de démo couvrent 7 facultés, 11 programmes, 24 cours, 7 professeurs et 17 étudiants (admissions validées, en attente et rejetées, paiements partiels). Les autres comptes étudiants (`prenom.nom@etu.unaf.ht`) utilisent aussi `etu123`.
 
-Les pièces jointes sont enregistrées dans `C:\Users\<vous>\inscriptions-uploads`.
+Pièces jointes enregistrées dans `C:\Users\<vous>\unaf-uploads`.
 
 ## Hors périmètre (volontairement non inclus)
 
